@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pickle
 
-from nltools.data import Brain_Data, Adjacency
-from nltools.stats import fdr, threshold
+from nltools.data import Adjacency
 
 from nilearn import plotting
 from nilearn import image
@@ -19,7 +19,7 @@ from pymnet import *
 metadata_dir = "/m/nbe/scratch/heps/data/data_info.xlsx"
 ts_dir = "/m/nbe/scratch/heps/trianaa1/multilayer/results/"
 bh_dir = "/m/nbe/scratch/heps/panulaj/prediction/clinical_data/CSV_files/original_clinical_outcome.csv"
-atlas="/m/nbe/scratch/heps/trianaa1/masks/group_roi_mask-brainnetome-3mm.nii"
+atlas="/m/cs/scratch/networks/trianaa1/Atlas/Brainnetome/Brainnetome/BN_Atlas_246_3mm.nii.gz"
 
 #Prepare the data from the subjects to be read
 metadata = prepare_metadata(metadata_dir,'metadata haywarn1')
@@ -41,11 +41,12 @@ for node in range(n_nodes):
     ISC_sim.append(Adjacency(1 - pairwise_distances(data[:, :, node], metric='correlation'), matrix_type='similarity'))
 ISC_sim = Adjacency(ISC_sim)
 
+pickle.dump(ISC_sim, open("/m/nbe/scratch/heps/trianaa1/multilayer/results/ISC_sim","wb"))
+
 #Calculate the FC similarity matrices
 FC_sim = []
 for subject in range(n_subs):
     FC_sim.append(Adjacency(1 - pairwise_distances(data[subject, :, :], metric='correlation'), matrix_type='similarity'))
 FC_sim = Adjacency(FC_sim)
 
-#Creating the multilayer... 2 nodes now
-n_layers = 2
+pickle.dump(FC_sim, open("/m/nbe/scratch/heps/trianaa1/multilayer/results/FC_sim","wb"))
