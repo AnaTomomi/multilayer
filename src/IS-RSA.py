@@ -55,7 +55,7 @@ for node in range(len(similarity_matrices)):
 #For each node, we compute the Spearman correlations between the ISC and the behavioral scores and store them 
 #in a dictionary. In the end, we end up with as many correlations as nodes in the parcellations.
 
-#Some code for plotting
+#Plotting the results
 im2 = roi_to_brain(atlas, isrsa_beh)
 plotting.plot_stat_map(im2)
 plotting.plot_stat_map(im2, display_mode='z', cut_coords=8, title = "NN", cmap='RdBu_r')
@@ -71,14 +71,9 @@ for node in range(len(similarity_matrices)):
     isrsa_beh_r[node] = stats_beh['correlation']
     isrsa_beh_p[node] = stats_beh['p']
     
-
 #So, we have run some non-parametric permutations by shuffling the behavioral matrix in columns and rows simultaneously.
 #But, because we also have the distribution, we have the p-values of each happening, so the only thing left to do is...
 #Correct for multiple comparisons!
 
 fdr_thr = fdr(pd.Series(isrsa_beh_p).values)
 print(f'FDR Threshold: {fdr_thr}')
-
-is_rsa_r = roi_to_brain(atlas, isrsa_beh_r)
-is_rsa_p = roi_to_brain(atlas, isrsa_beh_p)
-plotting.view_img(threshold(is_rsa_r, is_rsa_p, thr=fdr_thr))
