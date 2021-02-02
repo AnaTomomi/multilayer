@@ -1,0 +1,13 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+
+# Compiled source #
+###################
+*.pyc
+
+# Data #
+########
+*.tsv
