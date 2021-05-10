@@ -46,7 +46,10 @@ pickle.dump(ISC_sim, open("/m/nbe/scratch/heps/trianaa1/multilayer/results/ISC_s
 #Calculate the FC similarity matrices
 FC_sim = []
 for subject in range(n_subs):
-    FC_sim.append(Adjacency(1 - pairwise_distances(data[subject, :, :], metric='correlation'), matrix_type='similarity'))
+    FC_sim.append(Adjacency(1 - pairwise_distances(np.transpose(data[subject, :, :]), metric='correlation'), matrix_type='similarity'))
 FC_sim = Adjacency(FC_sim)
 
 pickle.dump(FC_sim, open("/m/nbe/scratch/heps/trianaa1/multilayer/results/FC_sim","wb"))
+
+#Construct the multilayer network
+brain = brain_to_multilayer(ISC_sim, FC_sim)
