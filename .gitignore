@@ -3,6 +3,7 @@
 .DS_Store
 .DS_Store?
 ._*
+.ipynb_checkpoints
 
 # Compiled source #
 ###################
@@ -11,3 +12,4 @@
 # Data #
 ########
 *.tsv
+*.csv
