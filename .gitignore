@@ -8,6 +8,7 @@
 # Compiled source #
 ###################
 *.pyc
+/src/__pycache__/*.pyc
 
 # Data #
 ########
