@@ -50,8 +50,32 @@ subjects = list(range(0,n_sub))
     
 brain = MultilayerNetwork(aspects=1)
 
+#Full network
+#links from FC (intra layers)
+for sub in subjects:
+    data = np.zeros((n_rois,n_rois))
+    data[np.triu_indices(n_rois,1)] = fc_file[sub,:]
+    ids = tuple(np.argwhere(data>0))
+    for node in ids:
+        brain[node[0], node[1], sub, sub] = data[node[0], node[1]]
+        
+#links from ISFC (interlayer)
+for subj_pair in isfc_file.keys():
+    data = isfc_file[subj_pair]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    ids = tuple(np.argwhere(data>0))
+    sub = [int(x) for x in subj_pair.split('-')]
+    for node in ids:
+        brain[node[0], node[1], sub[0], sub[1]] = data[node[0], node[1]]
+        
+pickle.dump(brain, open(f'{savepath}/multilayer_net_model1_fullweight',"wb"))
+
 #Model 1
 #links from FC (intra layers)
+rois = list(range(0,n_rois))
+subjects = list(range(0,n_sub))
+    
+brain = MultilayerNetwork(aspects=1)
+
 for sub in subjects:
     data = np.zeros((n_rois,n_rois))
     data[np.triu_indices(n_rois,1)] = fc_thresholded[sub,:]
